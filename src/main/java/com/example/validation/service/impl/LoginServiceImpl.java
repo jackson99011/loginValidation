@@ -20,4 +20,6 @@ public class LoginServiceImpl implements LoginService {
     public boolean valid(String input) {
         return true;
     }
+    
+    
 }

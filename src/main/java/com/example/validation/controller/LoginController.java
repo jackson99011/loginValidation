@@ -17,9 +17,12 @@ public class LoginController {
     private LoginService loginService;
 
 
-    @PostMapping("/products")
+    @PostMapping("/loginValid")
     public ResponseEntity<?> loginValid(@RequestBody @Valid String input)
     {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        if (input.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        else
+            return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
