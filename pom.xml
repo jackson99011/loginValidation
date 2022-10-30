@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>bookcart</artifactId>
+	<artifactId>valid</artifactId>
 	<version>0.0.1</version>
-	<name>bookcart</name>
-	<description> Spring Boot for login valid</description>
+	<name>password valid</name>
+	<description> Spring Boot for password valid</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

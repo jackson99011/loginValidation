@@ -1,4 +1,4 @@
-package com.example.validation;
+package com.example.password;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -75,7 +75,7 @@ public class Swagger2 {
     private ApiInfo apiInfo()
     {
         return new ApiInfoBuilder()
-                .title("測試 validation 建構RESTful API")
+                .title("測試 valid 建構RESTful API")
                 .version("1.0.0")
                 .build();
     }
