@@ -1,6 +1,5 @@
 package com.example.password.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,11 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -22,121 +16,49 @@ public class PasswordControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     @Test
-    public void getProduct() throws Exception {
+    public void truePassword() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products/{productId}", 1);
+                .post("/passwordValid").content("1a2b3c");
 
         mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.productName", equalTo("蘋果（澳洲）")))
-                .andExpect(jsonPath("$.category", equalTo("FOOD")))
-                .andExpect(jsonPath("$.imageUrl", notNullValue()))
-                .andExpect(jsonPath("$.price", notNullValue()))
-                .andExpect(jsonPath("$.stock", notNullValue()))
-                .andExpect(jsonPath("$.description", notNullValue()))
-                .andExpect(jsonPath("$.createdDate", notNullValue()))
-                .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
+                .andExpect(status().is(200));
     }
 
     @Test
-    public void getProduct_notFound() throws Exception {
+    public void noLowerLetterPassword() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products/{productId}", 20000);
+                .post("/passwordValid").content("1234567");
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is(404));
     }
 
-
-    @Transactional
     @Test
-    public void deleteProduct_deleteExistingProduct() throws Exception {
+    public void noDigitPassword() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/products/{productId}", 5);
+                .post("/passwordValid").content("abcdefg");
 
         mockMvc.perform(requestBuilder)
-                .andExpect(status().is(204));
-    }
-
-    @Transactional
-    @Test
-    public void deleteProduct_deleteNonExistingProduct() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/products/{productId}", 20000);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().is(204));
+                .andExpect(status().is(404));
     }
 
     @Test
-    public void getProducts() throws Exception {
+    public void haveUpperLetterPassword() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products");
+                .post("/passwordValid").content("Bb1234");
 
         mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.limit", notNullValue()))
-                .andExpect(jsonPath("$.offset", notNullValue()))
-                .andExpect(jsonPath("$.total", notNullValue()))
-                .andExpect(jsonPath("$.results", hasSize(5)));
+                .andExpect(status().is(404));
     }
 
     @Test
-    public void getProducts_filtering() throws Exception {
+    public void haveRepeatPassword() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products")
-                .param("search", "B")
-                .param("category", "CAR");
+                .post("/passwordValid").content("1a1a");
 
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.limit", notNullValue()))
-                .andExpect(jsonPath("$.offset", notNullValue()))
-                .andExpect(jsonPath("$.total", notNullValue()))
-                .andExpect(jsonPath("$.results", hasSize(2)));
+                .andExpect(status().is(404));
     }
 
-    @Test
-    public void getProducts_sorting() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products")
-                .param("orderBy", "price")
-                .param("sort", "desc");
-
-        mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.limit", notNullValue()))
-                .andExpect(jsonPath("$.offset", notNullValue()))
-                .andExpect(jsonPath("$.total", notNullValue()))
-                .andExpect(jsonPath("$.results", hasSize(5)))
-                .andExpect(jsonPath("$.results[0].productId", equalTo(6)))
-                .andExpect(jsonPath("$.results[1].productId", equalTo(5)))
-                .andExpect(jsonPath("$.results[2].productId", equalTo(7)))
-                .andExpect(jsonPath("$.results[3].productId", equalTo(4)))
-                .andExpect(jsonPath("$.results[4].productId", equalTo(2)));
-    }
-
-    @Test
-    public void getProducts_pagination() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/products")
-                .param("limit", "2")
-                .param("offset", "2");
-
-        mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.limit", notNullValue()))
-                .andExpect(jsonPath("$.offset", notNullValue()))
-                .andExpect(jsonPath("$.total", notNullValue()))
-                .andExpect(jsonPath("$.results", hasSize(2)))
-                .andExpect(jsonPath("$.results[0].productId", equalTo(5)))
-                .andExpect(jsonPath("$.results[1].productId", equalTo(4)));
-    }
 }

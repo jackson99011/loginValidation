@@ -1,14 +1,14 @@
 package com.example.password.valid;
 
-import com.example.password.exception.PasswordValidException;
 //驗證小寫字母和數字至少出現一次
 //lowercase letters and numerical digits  with at least one of each.
 public class ValidLowerAndDigitsOnce implements PasswordValid {
 
     @Override
-    public void validate(String input) throws PasswordValidException {
+    public ValidResult validate(String input) {
         boolean isDigit = false;
         boolean isLetter = false;
+        ValidResult validResult = new ValidResult();
 
         for(int i = 0 ; i < input.length(); i++) {
             if(Character.isDigit(input.charAt(i))) {
@@ -18,8 +18,13 @@ public class ValidLowerAndDigitsOnce implements PasswordValid {
                 isLetter = true;
             }
             if(isDigit && isLetter)
-                return;
+            {
+                validResult.setTrue(true);
+                return validResult;
+            }
         }
-        throw new PasswordValidException("lowercase letters and numerical digits  with at least one of each.");
+        validResult.setTrue(false);
+        validResult.setErrorMessage("lowercase letters and numerical digits  with at least one of each.");
+        return validResult;
     }
 }

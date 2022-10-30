@@ -1,7 +1,7 @@
 package com.example.password.controller;
 
 import com.example.password.service.ValidService;
-import com.example.password.valid.ValidResult;
+import com.example.password.valid.PasswordValidResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class LoginController {
     @PostMapping("/passwordValid")
     public ResponseEntity<?> passwordValid(@RequestBody @Valid String password)
     {
-        ValidResult result =  validService.validate(password);
+        PasswordValidResult result =  validService.validate(password);
         if(result.isValid()){
             return ResponseEntity.status(HttpStatus.OK)
                     .build();

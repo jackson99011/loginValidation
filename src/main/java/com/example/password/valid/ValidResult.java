@@ -1,40 +1,22 @@
 package com.example.password.valid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ValidResult {
-	
-	private boolean valid;
-	
-	private List<String> validErrorsMsg;
+    private boolean isTrue;
+    private String errorMessage;
 
-	public ValidResult() {
-		super();
-		validErrorsMsg = new ArrayList<String>();
-	}
+    public boolean isTrue() {
+        return isTrue;
+    }
 
-	public boolean isValid() {
-		return valid;
-	}
+    public void setTrue(boolean aTrue) {
+        this.isTrue = aTrue;
+    }
 
-	public void setValid(boolean valid) {
-		this.valid = valid;
-	}
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-	public List<String> getValidErrorsMsg() {
-		return validErrorsMsg;
-	}
-
-	private void setValidErrorsMsg(List<String> validErrorsMsg) {
-		this.validErrorsMsg = validErrorsMsg;
-	}
-	
-	public void addValidErrorsMsg(String errorMessage){
-		this.validErrorsMsg.add(errorMessage);
-	}
-	
-	
-	
-
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

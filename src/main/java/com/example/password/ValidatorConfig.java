@@ -38,7 +38,7 @@ public class ValidatorConfig {
 	public List<PasswordValid> validators(){
 		List<PasswordValid> validators  = new ArrayList<>();
 		validators.add(lengthValidator());
-		validators.add(lengthValidator());
+		validators.add(lowerAndDigitsValidator());
 		validators.add(lowerAndDigitsOnceValidator());
 		validators.add(notRepeatSequenceValidator());
 		return validators;
